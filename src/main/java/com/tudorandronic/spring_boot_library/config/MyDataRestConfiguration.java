@@ -1,6 +1,7 @@
 package com.tudorandronic.spring_boot_library.config;
 
 import com.tudorandronic.spring_boot_library.entity.Book;
+import com.tudorandronic.spring_boot_library.entity.Review;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
@@ -15,6 +16,7 @@ public class MyDataRestConfiguration implements RepositoryRestConfigurer {
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors){
 
         config.exposeIdsFor(Book.class);
+        config.exposeIdsFor(Review.class);
 
         config.getExposureConfiguration()
                 .forDomainType(Book.class)
@@ -24,6 +26,16 @@ public class MyDataRestConfiguration implements RepositoryRestConfigurer {
                 .withCollectionExposure((metdata, httpMethods) -> {
                     return httpMethods.disable(HttpMethod.DELETE, HttpMethod.PATCH, HttpMethod.POST, HttpMethod.PUT);
                 });
+
+        config.getExposureConfiguration()
+                .forDomainType(Review.class)
+                .withItemExposure((metdata, httpMethods) -> {
+                    return httpMethods.disable(HttpMethod.DELETE, HttpMethod.PATCH, HttpMethod.POST, HttpMethod.PUT);
+                })
+                .withCollectionExposure((metdata, httpMethods) -> {
+                    return httpMethods.disable(HttpMethod.DELETE, HttpMethod.PATCH, HttpMethod.POST, HttpMethod.PUT);
+                });
+
 
         System.out.println(config.getBasePath());
 
